@@ -42,7 +42,7 @@ Para cumplir con las necesidad arriba indicada, se procederá a detallar en orde
 
 En el presente trabajo se realizó inicialmente una busqueda de datasets que comprendían datos sobre salarios de los empleos en áreas de data science; seguido se realizó inicialmente el análisis de los datos que comprendían el dataset elegido, en este caso, "Data Science Jobs Salaries", el cual fue encontrado en el repositorio *Kaglee* al cual se puede acceder a través del siguiente [link](https://www.kaggle.com/saurabhshahane/data-science-jobs-salaries)
 
-**Esquema en estrella**: Según wikipedia, "*En las bases de datos usadas para data warehousing, **un esquema en estrella** es un modelo de datos que tiene una **tabla de hechos** (o tabla fact) que contiene los datos para el análisis, rodeada de las **tablas de dimensiones***". Dicho diagrama quedó de la siguiente forma:
+**Esquema en estrella**: Según IBM, "*Un esquema de estrella es un tipo de esquema de base de datos relacional que consta de una sola tabla de **hechos** central rodeada de tablas de **dimensiones**.*". Dicho diagrama quedó de la siguiente forma:
 
 ## Herramientas tecnológicas implementadas
 
