@@ -25,6 +25,10 @@ Fecha de publicación: 19 de octubre de 2022
   - [Herramientas tecnológicas implementadas](#herramientas-tecnológicas-implementadas)
   - [Contenido del desarrollo](#contenido-del-desarrollo)
     - [Base de datos](#base-de-datos)
+    - [Lenguaje de formulas DAX](#lenguaje-de-formulas-dax)
+      - [Medidas calculadas](#medidas-calculadas)
+      - [Campos](#campos)
+      - [Finalidad de la medida y qué se busca analizar](#finalidad-de-la-medida-y-qué-se-busca-analizar)
     - [Visualización](#visualización)
   - [Futuras líneas](#futuras-líneas)
 
@@ -95,6 +99,66 @@ Para el presente proyecto se utilizaron las herramientas de Power BI, Excel y Vi
     |badge|PK_id_badge|Int|
     |badge|badge|Varchar(5)|
     |badge|country|Varchar(40)|
+
+### Lenguaje de formulas DAX
+
+``` SQL
+-- Medidas calculada con una variable y al menos una medida de agregación
+
+MCA Cantidad de Data Engineer con ratio codigo 3 = VAR ratio_de = CALCULATE(DISTINCTCOUNT(job[PK_id_job]), remote_ratio[PK_id_ratio] = 3, job[job_title] = "Data Engineer")
+RETURN ratio_de
+
+MCA Salario max de un Data engineer in usd year 2021 = VAR max_salary_dataengineer = CALCULATE(MAX(job[salary_in_usd_year]), calendario[work_year] = 2021, job[job_title] = "Data engineer")
+RETURN max_salary_dataengineer
+
+MCA Salario máximo en usd por año = VAR max_salary_usd = MAX(job[salary_in_usd_year])
+RETURN max_salary_usd
+
+MCA Salario promedio en usd por año = VAR promedio_salario_usd_year = AVERAGE(job[salary_in_usd_year])
+RETURN promedio_salario_usd_year
+
+-- Medida calculada con dos variables, al menos una función de agregación y una función de inteligencia de tiempo
+
+MCA Diferencia del salario promedio por año de un Data Engineer = 
+VAR promedio_2021 = CALCULATE(AVERAGE(job[salary_in_usd_year]), job[job_title] = "Data Engineer",  job[work_year] = 2021)
+VAR promedio_2020 = CALCULATE(AVERAGE(job[salary_in_usd_year]), job[job_title] = "Data Engineer",  job[work_year] = 2020)
+RETURN ((promedio_2020 - promedio_2021)/promedio_2020)
+
+MCA Porcentaje de trabajo full remoto del total de registros = 
+VAR ratio3 = CALCULATE(COUNT(job[job_title]),remote_ratio[PK_id_ratio] = 3)
+VAR cantidad_registros = COUNT(job[job_title])
+RETURN ratio3 / cantidad_registros
+
+MCA Fecha de ultimo ingreso del mes = VAR fecha = ENDOFMONTH(calendario[fecha_calculada].[Date])
+RETURN fecha
+
+-- Medida calculada con un parámetro con al menos una función de agregación
+
+MCA Salario en cop por mes según parámetro dolar = SUM(job[salary_in_usd_month]) * [Valor precio_dolar]
+
+```
+
+#### Medidas calculadas
+
+![alt](assets/MedidasAvanzadas.JPG)
+
+#### Campos
+
+![alt](assets/MedidasAvanzadas01.JPG)
+
+#### Finalidad de la medida y qué se busca analizar
+
+- Medidas calculadas una variable
+  - MCA Cantidad de Data Engineer con ratio codigo 3
+  - MCA Salario max de un Data engineer in usd year 2021
+  - MCA Salario máximo en usd por año
+  - MCA Salario promedio en usd por año
+- Medidas calculadas dos variables
+  - MCA Diferencia del salario promedio por año de un Data Engineer
+  - MCA Porcentaje de trabajo full remoto del total de registros
+  - MCA Fecha de ultimo ingreso del mes
+- Medida calculada con un parámetro
+  - MCA Salario en cop por mes según parámetro dolar
 
 ### Visualización
 
